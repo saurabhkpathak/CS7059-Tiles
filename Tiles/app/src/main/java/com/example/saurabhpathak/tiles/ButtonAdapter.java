@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,11 +14,11 @@ import java.util.ArrayList;
  */
 
 public class ButtonAdapter extends BaseAdapter {
-    ArrayList<String> tileList;
+    ArrayList<Tile> tileList;
     Context context;
 
     private static LayoutInflater inflater=null;
-    public ButtonAdapter(Context context, ArrayList<String> itemList) {
+    public ButtonAdapter(Context context, ArrayList<Tile> itemList) {
         this.tileList = itemList;
         this.context = context;
         inflater = ( LayoutInflater )context.
@@ -44,14 +43,15 @@ public class ButtonAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView = inflater.inflate(R.layout.tile_layout, null);
-        final Button btn = (Button) rowView.findViewById(R.id.tileBtn);
-        btn.setText(tileList.get(position));
+        final Button tile = (Button) rowView.findViewById(R.id.tileBtn);
+        tile.setText(tileList.get(position).getVisibleValueValue());
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        // event handler when a tile is clicked
+        tile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomAnimations.rotateAnimation(btn);
-                Toast.makeText(context, "You Clicked " + tileList.get(position), Toast.LENGTH_SHORT).show();
+                CustomAnimations.rotateAnimation(tile);
+                tile.setText(tileList.get(position).getValue());
             }
         });
 
