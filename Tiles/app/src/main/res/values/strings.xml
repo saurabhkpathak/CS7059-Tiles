@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Tiles</string>
+    <string name="mainActivityText">Pathak\'s App</string>
+    <string name="mainActivitytext2">Saurabh\'s App</string>
 </resources>
