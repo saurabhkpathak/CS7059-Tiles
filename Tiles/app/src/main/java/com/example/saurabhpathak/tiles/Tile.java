@@ -13,7 +13,7 @@ public class Tile {
     public String getValue() {
         return this.value;
     }
-    public String getVisibleValueValue() {
+    public String getVisibleValue() {
         return this.visibleValue;
     }
     public Status getStatus() {
