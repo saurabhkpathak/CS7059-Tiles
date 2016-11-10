@@ -1,5 +1,6 @@
 package com.example.saurabhpathak.tiles;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -7,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.Chronometer;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,7 @@ public class ButtonAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         View rowView = inflater.inflate(R.layout.tile_layout, null);
         final Button tile = (Button) rowView.findViewById(R.id.tileBtn);
 
@@ -56,9 +57,10 @@ public class ButtonAdapter extends BaseAdapter {
             tile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Chronometer chronometer = (Chronometer) ((Activity)context).findViewById(R.id.chronometer);
+                    chronometer.start();
                     CustomAnimations.rotateAnimation(tile);
                     tile.setText(tileList.get(position).getValue());
-                    Toast.makeText(context, tileList.get(position).getStatus().toString(), Toast.LENGTH_SHORT);
 
                     // if this is the first click case
                     if(tileList.get(tileList.size() - 1).getValue() == null) {
@@ -67,8 +69,15 @@ public class ButtonAdapter extends BaseAdapter {
                     }
                     // if this is the second click case
                     else {
+                        String prevPos = tileList.get(tileList.size() - 1).getVisibleValue();
+                        final int prevInt = Integer.parseInt(prevPos);
+
+                        // if same button is clicked successively
+                        if (position == prevInt) {
+                            return;
+                        }
                         // if the two clicked tiles match
-                        if (tileList.get(tileList.size() - 1).getValue() == tile.getText()) {
+                        else if (tileList.get(tileList.size() - 1).getValue() == tile.getText()) {
                             tileList.get(position).setStatus(Tile.Status.unlocked);
                             int pos = Integer.parseInt(tileList.get(tileList.size() - 1).getVisibleValue());
                             tileList.get(pos).setStatus(Tile.Status.unlocked);
@@ -80,8 +89,12 @@ public class ButtonAdapter extends BaseAdapter {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    tile.setText("PATHAK");
+                                    tile.setText("TILE");
                                     CustomAnimations.rotateAnimation(tile);
+                                    View prev = parent.getChildAt(prevInt);
+                                    Button prevBtn = (Button) prev.findViewById(R.id.tileBtn);
+                                    prevBtn.setText("TILE");
+                                    CustomAnimations.rotateAnimation(prevBtn);
                                 }
                             }, 500);
                             tileList.set(tileList.size() - 1, new Tile(Tile.Status.locked, null, null));

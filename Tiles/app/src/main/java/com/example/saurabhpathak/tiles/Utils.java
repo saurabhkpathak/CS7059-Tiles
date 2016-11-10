@@ -1,5 +1,8 @@
 package com.example.saurabhpathak.tiles;
 
+import android.content.Context;
+import android.widget.Toast;
+
 /**
  * Created by saurabhpathak on 08/11/2016.
  */
@@ -24,5 +27,8 @@ public class Utils {
             values[i+9] = i;
         }
         return values;
+    }
+    public static void showLongToast(String msg, Context context) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG);
     }
 }
