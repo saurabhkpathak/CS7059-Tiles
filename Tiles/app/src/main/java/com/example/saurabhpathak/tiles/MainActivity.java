@@ -3,6 +3,7 @@ package com.example.saurabhpathak.tiles;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         tileList.add(new Tile(Tile.Status.locked, null, null));
+
+        TextView tv = (TextView) findViewById(R.id.clickCount);
+        tv.setText("Number Of Clicks: 0");
 
         GridView myGrid = (GridView) findViewById(R.id.myGrid);
         myGrid.setAdapter(new ButtonAdapter(this, tileList));

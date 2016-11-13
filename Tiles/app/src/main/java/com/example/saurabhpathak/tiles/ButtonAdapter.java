@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -19,11 +20,13 @@ import java.util.ArrayList;
 public class ButtonAdapter extends BaseAdapter {
     ArrayList<Tile> tileList;
     Context context;
+    int clickCounter;
 
     private static LayoutInflater inflater=null;
     public ButtonAdapter(Context context, ArrayList<Tile> itemList) {
         this.tileList = itemList;
         this.context = context;
+        this.clickCounter = 0;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -48,7 +51,7 @@ public class ButtonAdapter extends BaseAdapter {
         View rowView = inflater.inflate(R.layout.tile_layout, null);
         final Button tile = (Button) rowView.findViewById(R.id.tileBtn);
 
-        if (position == tileList.size() - 1) {
+        if (position == getCount() - 1) {
             tile.setVisibility(View.GONE);
         } else {
             tile.setText(tileList.get(position).getVisibleValue());
@@ -59,17 +62,20 @@ public class ButtonAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     Chronometer chronometer = (Chronometer) ((Activity)context).findViewById(R.id.chronometer);
                     chronometer.start();
+                    clickCounter++;
+                    TextView clicks = (TextView) ((Activity)context).findViewById(R.id.clickCount);
+                    clicks.setText("Number Of Clicks: " + String.valueOf(clickCounter));
                     CustomAnimations.rotateAnimation(tile);
                     tile.setText(tileList.get(position).getValue());
 
                     // if this is the first click case
-                    if(tileList.get(tileList.size() - 1).getValue() == null) {
-                        tileList.set(tileList.size() - 1, tileList.get(position));
-                        tileList.get(tileList.size() - 1).setVisibleValue(String.valueOf(position));
+                    if(tileList.get(getCount() - 1).getValue() == null) {
+                        tileList.set(getCount() - 1, tileList.get(position));
+                        tileList.get(getCount() - 1).setVisibleValue(String.valueOf(position));
                     }
                     // if this is the second click case
                     else {
-                        String prevPos = tileList.get(tileList.size() - 1).getVisibleValue();
+                        String prevPos = tileList.get(getCount() - 1).getVisibleValue();
                         final int prevInt = Integer.parseInt(prevPos);
 
                         // if same button is clicked successively
@@ -77,11 +83,11 @@ public class ButtonAdapter extends BaseAdapter {
                             return;
                         }
                         // if the two clicked tiles match
-                        else if (tileList.get(tileList.size() - 1).getValue() == tile.getText()) {
+                        else if (tileList.get(getCount() - 1).getValue() == tile.getText()) {
                             tileList.get(position).setStatus(Tile.Status.unlocked);
-                            int pos = Integer.parseInt(tileList.get(tileList.size() - 1).getVisibleValue());
+                            int pos = Integer.parseInt(tileList.get(getCount() - 1).getVisibleValue());
                             tileList.get(pos).setStatus(Tile.Status.unlocked);
-                            tileList.set(tileList.size() - 1, new Tile(Tile.Status.locked, null, null));
+                            tileList.set(getCount() - 1, new Tile(Tile.Status.locked, null, null));
                         }
                         // if the two clicked tiles do not match
                         else {
@@ -97,7 +103,7 @@ public class ButtonAdapter extends BaseAdapter {
                                     CustomAnimations.rotateAnimation(prevBtn);
                                 }
                             }, 500);
-                            tileList.set(tileList.size() - 1, new Tile(Tile.Status.locked, null, null));
+                            tileList.set(getCount() - 1, new Tile(Tile.Status.locked, null, null));
                         }
                     }
                 }
