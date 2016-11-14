@@ -109,6 +109,8 @@ public class ButtonAdapter extends BaseAdapter {
                     }
                     if (Utils.isListUnlocked(tileList)) {
                         chronometer.stop();
+                        TextView tv = (TextView)((Activity)context).findViewById(R.id.tv_winStatus);
+                        tv.setText("Game Finished!!!\n Your final Score is:" + null);
                         Log.d("Pathak", "Unlocked");
                     } else {
                         Log.d("Pathak", "Locked");

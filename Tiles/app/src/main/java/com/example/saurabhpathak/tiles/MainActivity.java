@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         tileList.add(new Tile(Tile.Status.locked, null, null));
 
         TextView tv = (TextView) findViewById(R.id.clickCount);
+        TextView scoreView = (TextView) findViewById(R.id.tv_winStatus);
+        scoreView.setText("");
         tv.setText("Number Of Clicks: 0");
 
         GridView myGrid = (GridView) findViewById(R.id.myGrid);
