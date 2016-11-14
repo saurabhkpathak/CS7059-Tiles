@@ -21,5 +21,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"></activity>
     </application>
-
+8-9 deploy
+    5-7 qa
 </manifest>
