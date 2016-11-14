@@ -3,6 +3,8 @@ package com.example.saurabhpathak.tiles;
 import android.content.Context;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /**
  * Created by saurabhpathak on 08/11/2016.
  */
@@ -30,5 +32,13 @@ public class Utils {
     }
     public static void showLongToast(String msg, Context context) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG);
+    }
+    public static boolean isListUnlocked(ArrayList<Tile> list) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i).getStatus() != Tile.Status.unlocked) {
+                return false;
+            }
+        }
+        return true;
     }
 }

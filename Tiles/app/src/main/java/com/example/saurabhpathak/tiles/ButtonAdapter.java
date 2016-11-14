@@ -3,6 +3,7 @@ package com.example.saurabhpathak.tiles;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class ButtonAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, final ViewGroup parent) {
+    public View getView(final int position, final View convertView, final ViewGroup parent) {
         View rowView = inflater.inflate(R.layout.tile_layout, null);
         final Button tile = (Button) rowView.findViewById(R.id.tileBtn);
 
@@ -105,6 +106,12 @@ public class ButtonAdapter extends BaseAdapter {
                             }, 500);
                             tileList.set(getCount() - 1, new Tile(Tile.Status.locked, null, null));
                         }
+                    }
+                    if (Utils.isListUnlocked(tileList)) {
+                        chronometer.stop();
+                        Log.d("Pathak", "Unlocked");
+                    } else {
+                        Log.d("Pathak", "Locked");
                     }
                 }
             });
