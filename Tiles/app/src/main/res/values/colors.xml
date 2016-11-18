@@ -3,6 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="tile_color">#4286f4</color>
     <color name="tile_matched">#8CC276</color>
+    <color name="tile_gradient_start">#EA8FE7</color>
+    <color name="tile_gradient_end">#FC90CC</color>
+    <color name="background_gradient_start">#620831</color>
+    <color name="background_gradient_end">#341B6C</color>
 </resources>

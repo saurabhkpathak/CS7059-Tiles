@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">Tiles</string>
-    <string name="mainActivityText">Pathak\'s App</string>
-    <string name="mainActivitytext2">Saurabh\'s App</string>
     <string name="title_activity_index">IndexActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tile_label">TILE</string>
 </resources>

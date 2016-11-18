@@ -3,7 +3,6 @@ package com.example.saurabhpathak.tiles;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,9 +92,11 @@ public class ButtonAdapter extends BaseAdapter {
                             int pos = Integer.parseInt(tileList.get(getCount() - 1).getVisibleValue());
                             tileList.get(pos).setStatus(Tile.Status.unlocked);
                             tileList.set(getCount() - 1, new Tile(Tile.Status.locked, null, null));
-                            tile.setBackgroundColor(context.getResources().getColor(R.color.tile_matched));
                             Button prevBtn = (Button) parent.getChildAt(prevInt).findViewById(R.id.tileBtn);
                             prevBtn.setBackgroundColor(context.getResources().getColor(R.color.tile_matched));
+                            tile.setBackgroundColor(context.getResources().getColor(R.color.tile_matched));
+                            prevBtn.setOnClickListener(null);
+                            tile.setOnClickListener(null);
                         }
                         // if the two clicked tiles do not match
                         else {
@@ -103,29 +104,26 @@ public class ButtonAdapter extends BaseAdapter {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    tile.setText("TILE");
+                                    tile.setText(R.string.tile_label);
                                     CustomAnimations.rotateAnimation(tile);
                                     View prev = parent.getChildAt(prevInt);
                                     Button prevBtn = (Button) prev.findViewById(R.id.tileBtn);
-                                    prevBtn.setText("TILE");
+                                    prevBtn.setText(R.string.tile_label);
                                     CustomAnimations.rotateAnimation(prevBtn);
                                 }
                             }, 500);
                             tileList.set(getCount() - 1, new Tile(Tile.Status.locked, null, null));
                         }
                     }
+                    // check if the whole grid is unlocked and show score
                     if (Utils.isListUnlocked(tileList)) {
                         chronometer.stop();
                         TextView tv = (TextView)((Activity)context).findViewById(R.id.tv_winStatus);
                         tv.setText("Game Finished!!!\n Your final Score is:" + null);
-                        Log.d("Pathak", "Unlocked");
-                    } else {
-                        Log.d("Pathak", "Locked");
                     }
                 }
             });
         }
-
         return rowView;
     }
 }

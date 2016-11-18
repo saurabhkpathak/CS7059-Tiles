@@ -5,4 +5,5 @@
     <dimen name="tile_size">70dp</dimen>
     <dimen name="color_tile_size">60dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="tile_radius">5dp</dimen>
 </resources>
