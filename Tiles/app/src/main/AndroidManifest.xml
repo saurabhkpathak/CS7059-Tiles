@@ -7,7 +7,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         <activity android:name=".IndexActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,9 +18,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_index"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="portrait"></activity>
     </application>
-8-9 deploy
-    5-7 qa
 </manifest>

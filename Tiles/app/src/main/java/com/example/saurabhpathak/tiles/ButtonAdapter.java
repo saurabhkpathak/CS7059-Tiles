@@ -83,12 +83,19 @@ public class ButtonAdapter extends BaseAdapter {
                         if (position == prevInt) {
                             return;
                         }
+                        // if second click is made on unlocked tile
+                        else if (tileList.get(position).getStatus() == Tile.Status.unlocked) {
+                            return;
+                        }
                         // if the two clicked tiles match
                         else if (tileList.get(getCount() - 1).getValue() == tile.getText()) {
                             tileList.get(position).setStatus(Tile.Status.unlocked);
                             int pos = Integer.parseInt(tileList.get(getCount() - 1).getVisibleValue());
                             tileList.get(pos).setStatus(Tile.Status.unlocked);
                             tileList.set(getCount() - 1, new Tile(Tile.Status.locked, null, null));
+                            tile.setBackgroundColor(context.getResources().getColor(R.color.tile_matched));
+                            Button prevBtn = (Button) parent.getChildAt(prevInt).findViewById(R.id.tileBtn);
+                            prevBtn.setBackgroundColor(context.getResources().getColor(R.color.tile_matched));
                         }
                         // if the two clicked tiles do not match
                         else {
