@@ -3,6 +3,10 @@ package com.example.saurabhpathak.tiles;
 import android.content.Context;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -40,5 +44,33 @@ public class Utils {
             }
         }
         return true;
+    }
+    public static JSONArray getJsonListFromArrayList(ArrayList<Tile> tileList) throws JSONException {
+        JSONArray list = new JSONArray();
+        JSONObject obj;
+        for (int i = 0; i < tileList.size(); i++) {
+            obj = new JSONObject();
+            obj.put("value", tileList.get(i).getValue());
+            obj.put("visibleValue", tileList.get(i).getVisibleValue());
+            obj.put("status", tileList.get(i).getStatus());
+            list.put(obj);
+        }
+        return list;
+    }
+    public static ArrayList<Tile> getTileListFromJson(String l) throws JSONException {
+        JSONArray list = new JSONArray(l);
+        ArrayList<Tile> tileList = new ArrayList<Tile>();
+        for (int i = 0; i <= list.length(); i++) {
+            JSONObject obj = list.getJSONObject(i);
+            String value = (String) obj.get("value");
+            String visibleValue = (String) obj.get("visibleValue");
+            String status = (String) obj.get("status");
+            if (status.equals("locked")) {
+                tileList.add(new Tile(Tile.Status.locked, value, visibleValue));
+            } else if(status.equals("unlocked")) {
+                tileList.add(new Tile(Tile.Status.unlocked, value, visibleValue));
+            }
+        }
+        return tileList;
     }
 }
