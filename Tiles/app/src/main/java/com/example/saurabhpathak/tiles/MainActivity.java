@@ -25,11 +25,13 @@ public class MainActivity extends Activity {
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         String savedList = settings.getString("tileList", "Saurabh Pathak");
+        Utils.logMessage(savedList);
 
         tileList = new ArrayList<Tile>();
         JSONArray list = null;
         try {
             list = new JSONArray(savedList);
+            Log.d("json array size is", String.valueOf(list.length()));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -51,7 +53,7 @@ public class MainActivity extends Activity {
         }
 
         Log.d("size", String.valueOf(tileList.size()));
-        if (tileList.size() == 0) {
+        if (tileList.size() == 0 || tileList.size() != 21) {
             Log.d("z z", "zero size hai");
             tileList = new ArrayList<Tile>();
             int[] values = Utils.createIntegerArrayAndExtend(20);

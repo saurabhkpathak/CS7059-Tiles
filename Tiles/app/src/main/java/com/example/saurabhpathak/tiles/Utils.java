@@ -1,6 +1,7 @@
 package com.example.saurabhpathak.tiles;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -50,8 +51,8 @@ public class Utils {
         JSONObject obj;
         for (int i = 0; i < tileList.size(); i++) {
             obj = new JSONObject();
-            obj.put("value", tileList.get(i).getValue());
-            obj.put("visibleValue", tileList.get(i).getVisibleValue());
+            obj.put("value", tileList.get(i).getValue() == null ? "" : tileList.get(i).getValue());
+            obj.put("visibleValue", tileList.get(i).getVisibleValue() == null ? "" : tileList.get(i).getVisibleValue());
             obj.put("status", tileList.get(i).getStatus());
             list.put(obj);
         }
@@ -72,5 +73,8 @@ public class Utils {
             }
         }
         return tileList;
+    }
+    public static void logMessage(String msg) {
+        Log.d("ttttttt", msg);
     }
 }
