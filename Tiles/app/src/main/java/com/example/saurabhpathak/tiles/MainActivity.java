@@ -3,7 +3,6 @@ package com.example.saurabhpathak.tiles;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -25,7 +24,6 @@ public class MainActivity extends Activity {
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         String savedList = settings.getString("tileList", "Saurabh Pathak");
-        Utils.logMessage(savedList);
 
         tileList = new ArrayList<Tile>();
         JSONArray list = null;
@@ -34,23 +32,24 @@ public class MainActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < list.length(); i++) {
-            JSONObject obj = null;
-            try {
-                obj = list.getJSONObject(i);
-                String value = (String) obj.get("value");
-                String visibleValue = (String) obj.get("visibleValue");
-                String status = (String) obj.get("status");
-                if (i == list.length() - 1) {
-                    tileList.add(new Tile(Tile.Status.locked, null, null));
+        if (list != null) {
+            for (int i = 0; i < list.length(); i++) {
+                JSONObject obj = null;
+                try {
+                    obj = list.getJSONObject(i);
+                    String value = (String) obj.get("value");
+                    String visibleValue = (String) obj.get("visibleValue");
+                    String status = (String) obj.get("status");
+                    if (i == list.length() - 1) {
+                        tileList.add(new Tile(Tile.Status.locked, null, null));
+                    } else if (status.equals("locked")) {
+                        tileList.add(new Tile(Tile.Status.locked, value, visibleValue));
+                    } else if (status.equals("unlocked")) {
+                        tileList.add(new Tile(Tile.Status.unlocked, value, visibleValue));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                else if (status.equals("locked")) {
-                    tileList.add(new Tile(Tile.Status.locked, value, visibleValue));
-                } else if(status.equals("unlocked")) {
-                    tileList.add(new Tile(Tile.Status.unlocked, value, visibleValue));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         }
 
@@ -78,17 +77,19 @@ public class MainActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+
+        if (Utils.isListUnlocked(tileList)) {
+            editor.remove("tileList");
+            editor.commit();
+            return;
+        }
         try {
             JSONArray list = Utils.getJsonListFromArrayList(tileList);
-
-            // We need an Editor object to make preference changes.
-            // All objects are from android.context.Context
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            SharedPreferences.Editor editor = settings.edit();
             editor.putString("tileList", list.toString());
-            Log.d("saved list", list.toString());
-
-            // Commit the edits!
             editor.commit();
         } catch (JSONException e) {
             e.printStackTrace();
