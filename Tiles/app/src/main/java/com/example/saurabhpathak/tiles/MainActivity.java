@@ -31,7 +31,6 @@ public class MainActivity extends Activity {
         JSONArray list = null;
         try {
             list = new JSONArray(savedList);
-            Log.d("json array size is", String.valueOf(list.length()));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -42,7 +41,10 @@ public class MainActivity extends Activity {
                 String value = (String) obj.get("value");
                 String visibleValue = (String) obj.get("visibleValue");
                 String status = (String) obj.get("status");
-                if (status.equals("locked")) {
+                if (i == list.length() - 1) {
+                    tileList.add(new Tile(Tile.Status.locked, null, null));
+                }
+                else if (status.equals("locked")) {
                     tileList.add(new Tile(Tile.Status.locked, value, visibleValue));
                 } else if(status.equals("unlocked")) {
                     tileList.add(new Tile(Tile.Status.unlocked, value, visibleValue));
@@ -52,9 +54,7 @@ public class MainActivity extends Activity {
             }
         }
 
-        Log.d("size", String.valueOf(tileList.size()));
         if (tileList.size() == 0 || tileList.size() != 21) {
-            Log.d("z z", "zero size hai");
             tileList = new ArrayList<Tile>();
             int[] values = Utils.createIntegerArrayAndExtend(20);
 
