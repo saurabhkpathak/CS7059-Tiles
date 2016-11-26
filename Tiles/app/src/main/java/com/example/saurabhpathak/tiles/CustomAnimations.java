@@ -13,7 +13,5 @@ public class CustomAnimations {
         a.setFillAfter(true);
         a.setDuration(200);
         btn.startAnimation(a);
-        //btn1.clearAnimation();
-        //btn1.setVisibility(btn1.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
     }
 }

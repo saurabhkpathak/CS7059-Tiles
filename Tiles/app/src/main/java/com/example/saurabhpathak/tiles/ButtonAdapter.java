@@ -54,75 +54,83 @@ public class ButtonAdapter extends BaseAdapter {
         if (position == getCount() - 1) {
             tile.setVisibility(View.GONE);
         } else {
-            tile.setText(tileList.get(position).getVisibleValue());
+            if (tileList.get(position).getStatus() == Tile.Status.unlocked) {
+                tile.setText(tileList.get(position).getValue());
+                tile.setBackgroundColor(context.getResources().getColor(R.color.tile_matched));
+            }
+            else {
+                tile.setText(tileList.get(position).getVisibleValue());
 
-            // event handler when a tile is clicked
-            tile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Chronometer chronometer = (Chronometer) ((Activity)context).findViewById(R.id.chronometer);
-                    chronometer.start();
-                    clickCounter++;
-                    TextView clicks = (TextView) ((Activity)context).findViewById(R.id.clickCount);
-                    clicks.setText("Number Of Clicks: " + String.valueOf(clickCounter));
-                    CustomAnimations.rotateAnimation(tile);
-                    tile.setText(tileList.get(position).getValue());
+                // event handler when a tile is clicked
+                tile.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Chronometer chronometer = (Chronometer) ((Activity)context).findViewById(R.id.chronometer);
+                        chronometer.start();
+                        clickCounter++;
+                        TextView clicks = (TextView) ((Activity)context).findViewById(R.id.clickCount);
+                        clicks.setText("Number Of Clicks: " + String.valueOf(clickCounter));
+                        CustomAnimations.rotateAnimation(tile);
+                        tile.setText(tileList.get(position).getValue());
 
-                    // if this is the first click case
-                    if(tileList.get(getCount() - 1).getValue() == null) {
-                        tileList.set(getCount() - 1, tileList.get(position));
-                        tileList.get(getCount() - 1).setVisibleValue(String.valueOf(position));
-                    }
-                    // if this is the second click case
-                    else {
-                        String prevPos = tileList.get(getCount() - 1).getVisibleValue();
-                        final int prevInt = Integer.parseInt(prevPos);
-
-                        // if same button is clicked successively
-                        if (position == prevInt) {
-                            return;
+                        // if this is the first click case
+                        if(tileList.get(getCount() - 1).getValue() == null) {
+                            Tile tempTile = new Tile(tileList.get(position).getStatus(), tileList.get(position).getValue(), tileList.get(position).getVisibleValue());
+                            tileList.set(getCount() - 1, tempTile);
+                            tileList.get(getCount() - 1).setVisibleValue(String.valueOf(position));
                         }
-                        // if second click is made on unlocked tile
-                        else if (tileList.get(position).getStatus() == Tile.Status.unlocked) {
-                            return;
-                        }
-                        // if the two clicked tiles match
-                        else if (tileList.get(getCount() - 1).getValue() == tile.getText()) {
-                            tileList.get(position).setStatus(Tile.Status.unlocked);
-                            int pos = Integer.parseInt(tileList.get(getCount() - 1).getVisibleValue());
-                            tileList.get(pos).setStatus(Tile.Status.unlocked);
-                            tileList.set(getCount() - 1, new Tile(Tile.Status.locked, null, null));
-                            Button prevBtn = (Button) parent.getChildAt(prevInt).findViewById(R.id.tileBtn);
-                            prevBtn.setBackgroundColor(context.getResources().getColor(R.color.tile_matched));
-                            tile.setBackgroundColor(context.getResources().getColor(R.color.tile_matched));
-                            prevBtn.setOnClickListener(null);
-                            tile.setOnClickListener(null);
-                        }
-                        // if the two clicked tiles do not match
+                        // if this is the second click case
                         else {
-                            final Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    tile.setText(R.string.tile_label);
-                                    CustomAnimations.rotateAnimation(tile);
-                                    View prev = parent.getChildAt(prevInt);
-                                    Button prevBtn = (Button) prev.findViewById(R.id.tileBtn);
-                                    prevBtn.setText(R.string.tile_label);
-                                    CustomAnimations.rotateAnimation(prevBtn);
-                                }
-                            }, 500);
-                            tileList.set(getCount() - 1, new Tile(Tile.Status.locked, null, null));
+                            String prevPos = tileList.get(getCount() - 1).getVisibleValue();
+                            final int prevInt = Integer.parseInt(prevPos);
+
+                            // if same button is clicked successively
+                            if (position == prevInt) {
+                                return;
+                            }
+                            // if second click is made on unlocked tile
+                            else if (tileList.get(position).getStatus() == Tile.Status.unlocked) {
+                                return;
+                            }
+                            // if the two clicked tiles match
+                            else if (tileList.get(getCount() - 1).getValue().equals(tile.getText())) {
+                                tileList.get(position).setStatus(Tile.Status.unlocked);
+                                int pos = Integer.parseInt(tileList.get(getCount() - 1).getVisibleValue());
+                                tileList.get(pos).setStatus(Tile.Status.unlocked);
+                                tileList.set(getCount() - 1, new Tile(Tile.Status.locked, null, null));
+                                Button prevBtn = (Button) parent.getChildAt(prevInt).findViewById(R.id.tileBtn);
+                                prevBtn.setBackgroundColor(context.getResources().getColor(R.color.tile_matched));
+                                tile.setBackgroundColor(context.getResources().getColor(R.color.tile_matched));
+                                prevBtn.setOnClickListener(null);
+                                tile.setOnClickListener(null);
+                            }
+                            // if the two clicked tiles do not match
+                            else {
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        tile.setText(R.string.tile_label);
+                                        CustomAnimations.rotateAnimation(tile);
+                                        View prev = parent.getChildAt(prevInt);
+                                        Button prevBtn = (Button) prev.findViewById(R.id.tileBtn);
+                                        prevBtn.setText(R.string.tile_label);
+                                        CustomAnimations.rotateAnimation(prevBtn);
+                                    }
+                                }, 500);
+                                tileList.set(getCount() - 1, new Tile(Tile.Status.locked, null, null));
+                            }
+                        }
+                        // check if the whole grid is unlocked and show score
+                        if (Utils.isListUnlocked(tileList)) {
+                            chronometer.stop();
+                            TextView tv = (TextView)((Activity)context).findViewById(R.id.tv_winStatus);
+                            tv.setText("Game Finished!!!\n Your final Score is:" + null);
+                            tileList = new ArrayList<Tile>();
                         }
                     }
-                    // check if the whole grid is unlocked and show score
-                    if (Utils.isListUnlocked(tileList)) {
-                        chronometer.stop();
-                        TextView tv = (TextView)((Activity)context).findViewById(R.id.tv_winStatus);
-                        tv.setText("Game Finished!!!\n Your final Score is:" + null);
-                    }
-                }
-            });
+                });
+            }
         }
         return rowView;
     }
