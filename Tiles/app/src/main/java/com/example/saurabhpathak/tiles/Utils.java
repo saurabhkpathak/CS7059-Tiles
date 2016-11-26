@@ -46,6 +46,14 @@ public class Utils {
         }
         return true;
     }
+    public static boolean isListLocked(ArrayList<Tile> list) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i).getStatus() != Tile.Status.locked) {
+                return false;
+            }
+        }
+        return true;
+    }
     public static JSONArray getJsonListFromArrayList(ArrayList<Tile> tileList) throws JSONException {
         JSONArray list = new JSONArray();
         JSONObject obj;
@@ -58,18 +66,25 @@ public class Utils {
         }
         return list;
     }
-    public static ArrayList<Tile> getTileListFromJson(String l) throws JSONException {
+    public static ArrayList<Tile> getTileListFromStringifiedList(String l) throws JSONException {
         JSONArray list = new JSONArray(l);
         ArrayList<Tile> tileList = new ArrayList<Tile>();
-        for (int i = 0; i <= list.length(); i++) {
-            JSONObject obj = list.getJSONObject(i);
-            String value = (String) obj.get("value");
-            String visibleValue = (String) obj.get("visibleValue");
-            String status = (String) obj.get("status");
-            if (status.equals("locked")) {
-                tileList.add(new Tile(Tile.Status.locked, value, visibleValue));
-            } else if(status.equals("unlocked")) {
-                tileList.add(new Tile(Tile.Status.unlocked, value, visibleValue));
+        for (int i = 0; i < list.length(); i++) {
+            JSONObject obj = null;
+            try {
+                obj = list.getJSONObject(i);
+                String value = (String) obj.get("value");
+                String visibleValue = (String) obj.get("visibleValue");
+                String status = (String) obj.get("status");
+                if (i == list.length() - 1) {
+                    tileList.add(new Tile(Tile.Status.locked, null, null));
+                } else if (status.equals("locked")) {
+                    tileList.add(new Tile(Tile.Status.locked, value, visibleValue));
+                } else if (status.equals("unlocked")) {
+                    tileList.add(new Tile(Tile.Status.unlocked, value, visibleValue));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
         return tileList;

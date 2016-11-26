@@ -2,9 +2,12 @@ package com.example.saurabhpathak.tiles;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import static com.example.saurabhpathak.tiles.MainActivity.PREFS_NAME;
 
 public class IndexActivity extends Activity {
 
@@ -13,17 +16,31 @@ public class IndexActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
 
-//        android.app.FragmentManager fm = getFragmentManager();
-//        FragmentTransaction ft = fm.beginTransaction();
-//        ft.replace(R.id.gameFragment, new GameFragment());
-//        ft.commit();
-
         Button btn = (Button)findViewById(R.id.navigateToGame);
+        Button resumeBtn = (Button)findViewById(R.id.resumeGame);
         btn.setText("Start Game");
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        final String savedList = settings.getString("tileList", "");
+
+        if (!savedList.equals("")) {
+            resumeBtn.setText("Resume Game");
+            resumeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(IndexActivity.this, MainActivity.class);
+                    intent.putExtra("isStartOrResume", "resume");
+                    startActivity(intent);
+                }
+            });
+        } else {
+            resumeBtn.setVisibility(View.GONE);
+        }
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(IndexActivity.this, MainActivity.class);
+                intent.putExtra("isStartOrResume", "start");
                 startActivity(intent);
             }
         });

@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -22,38 +21,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        String savedList = settings.getString("tileList", "Saurabh Pathak");
-
-        tileList = new ArrayList<Tile>();
-        JSONArray list = null;
-        try {
-            list = new JSONArray(savedList);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (list != null) {
-            for (int i = 0; i < list.length(); i++) {
-                JSONObject obj = null;
-                try {
-                    obj = list.getJSONObject(i);
-                    String value = (String) obj.get("value");
-                    String visibleValue = (String) obj.get("visibleValue");
-                    String status = (String) obj.get("status");
-                    if (i == list.length() - 1) {
-                        tileList.add(new Tile(Tile.Status.locked, null, null));
-                    } else if (status.equals("locked")) {
-                        tileList.add(new Tile(Tile.Status.locked, value, visibleValue));
-                    } else if (status.equals("unlocked")) {
-                        tileList.add(new Tile(Tile.Status.unlocked, value, visibleValue));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        if (tileList.size() == 0 || tileList.size() != 21) {
+        String isStartOrResume = getIntent().getStringExtra("isStartOrResume");
+        if (isStartOrResume.equals("start")) {
             tileList = new ArrayList<Tile>();
             int[] values = Utils.createIntegerArrayAndExtend(20);
 
@@ -63,6 +32,17 @@ public class MainActivity extends Activity {
             }
 
             tileList.add(new Tile(Tile.Status.locked, null, null));
+        } else if (isStartOrResume.equals("resume")) {
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            String savedList = settings.getString("tileList", "");
+
+            if (!savedList.equals("")) {
+                try {
+                    tileList = new ArrayList<Tile>(Utils.getTileListFromStringifiedList(savedList));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         TextView tv = (TextView) findViewById(R.id.clickCount);
@@ -82,7 +62,7 @@ public class MainActivity extends Activity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
 
-        if (Utils.isListUnlocked(tileList)) {
+        if (Utils.isListUnlocked(tileList) || Utils.isListLocked(tileList)) {
             editor.remove("tileList");
             editor.commit();
             return;
@@ -90,6 +70,7 @@ public class MainActivity extends Activity {
         try {
             JSONArray list = Utils.getJsonListFromArrayList(tileList);
             editor.putString("tileList", list.toString());
+            Utils.logMessage(list.toString());
             editor.commit();
         } catch (JSONException e) {
             e.printStackTrace();
