@@ -23,4 +23,15 @@
         android:id="@+id/resumeGame"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Welcome to TILES"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="40dp"
+        android:textSize="@dimen/welcome_text"
+        android:id="@+id/textView"
+        android:layout_above="@+id/resumeGame"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

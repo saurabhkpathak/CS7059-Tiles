@@ -3,6 +3,8 @@ package com.example.saurabhpathak.tiles;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,9 +126,14 @@ public class ButtonAdapter extends BaseAdapter {
                         // check if the whole grid is unlocked and show score
                         if (Utils.isListUnlocked(tileList)) {
                             chronometer.stop();
+                            long timeElapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
+                            int hours = (int) (timeElapsed / 3600000);
+                            int minutes = (int) (timeElapsed - hours * 3600000) / 60000;
+                            int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
+                            Log.d("chrono", String.valueOf(seconds));
                             TextView tv = (TextView)((Activity)context).findViewById(R.id.tv_winStatus);
-                            tv.setText("Game Finished!!!\n Your final Score is:" + null);
-                            tileList = new ArrayList<Tile>();
+                            tv.setText("Game Finished!!! Final Score is:" + (1000-(minutes*100)-(seconds*10)-clickCounter));
+                            //tileList = new ArrayList<Tile>();
                         }
                     }
                 });

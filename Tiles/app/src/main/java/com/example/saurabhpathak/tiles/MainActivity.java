@@ -42,6 +42,12 @@ public class MainActivity extends Activity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else {
+                TextView tv = (TextView) findViewById(R.id.tv_winStatus);
+                TextView tvClick = (TextView) findViewById(R.id.clickCount);
+                tvClick.setText("");
+                tv.setText("No saved game present");
+                return;
             }
         }
 
@@ -61,6 +67,10 @@ public class MainActivity extends Activity {
         // All objects are from android.context.Context
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
+
+        if(tileList == null) {
+            return;
+        }
 
         if (Utils.isListUnlocked(tileList) || Utils.isListLocked(tileList)) {
             editor.remove("tileList");

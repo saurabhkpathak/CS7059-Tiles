@@ -31,7 +31,7 @@ public class Utils {
         int[] values = new int[numberOfElements];
         for (int i = 1; i <= numberOfElements/2; i++) {
             values[i-1] = i;
-            values[i+9] = i;
+            values[i+(numberOfElements/2 - 1)] = i;
         }
         return values;
     }
