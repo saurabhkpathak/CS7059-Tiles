@@ -18,7 +18,9 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_index"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity android:name=".ScoreActivity"></activity>
     </application>
+
 </manifest>

@@ -9,7 +9,7 @@
 
     <Button
         android:text="Button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -18,9 +18,10 @@
 
     <Button
         android:text="Button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/resumeGame"
+        android:layout_marginTop="50dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
@@ -34,4 +35,13 @@
         android:id="@+id/textView"
         android:layout_above="@+id/resumeGame"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/resumeGame"
+        android:layout_alignStart="@+id/resumeGame"
+        android:id="@+id/scoreBtn" />
 </RelativeLayout>

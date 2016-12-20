@@ -20,6 +20,16 @@ public class IndexActivity extends Activity {
         Button resumeBtn = (Button)findViewById(R.id.resumeGame);
         btn.setText("Start Game");
 
+        Button scoreBtn = (Button)findViewById(R.id.scoreBtn);
+        scoreBtn.setText("Scores");
+        scoreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(IndexActivity.this, ScoreActivity.class);
+                startActivity(intent);
+            }
+        });
+
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         final String savedList = settings.getString("tileList", "");
 
