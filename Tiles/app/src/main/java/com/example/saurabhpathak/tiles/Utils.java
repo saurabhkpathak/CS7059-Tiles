@@ -89,6 +89,39 @@ public class Utils {
         }
         return tileList;
     }
+    public static JSONArray addAndSortList(String s, int newScore) throws JSONException {
+        JSONArray scores = new JSONArray(s);
+        ArrayList<Integer> scoreList = new ArrayList<Integer>();
+        JSONObject obj = null;
+
+        for (int i = 0; i < scores.length(); i++) {
+            try {
+                obj = scores.getJSONObject(i);
+                int value = (Integer) obj.get("value");
+                scoreList.add(value);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        int temp;
+        for (int i = 0; i < scoreList.size(); i++) {
+            int currentScore = scoreList.get(i);
+            if (currentScore < newScore) {
+                temp = newScore;
+                newScore = currentScore;
+                scoreList.add(i, temp);
+            }
+        }
+
+        scores = new JSONArray();
+        for (int i = 0; i < scoreList.size(); i++) {
+            obj = new JSONObject();
+            obj.put("value", scoreList.get(i));
+            scores.put(obj);
+        }
+        return scores;
+    }
     public static void logMessage(String msg) {
         Log.d("ttttttt", msg);
     }

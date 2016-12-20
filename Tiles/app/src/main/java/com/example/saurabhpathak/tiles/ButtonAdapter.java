@@ -14,6 +14,10 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import static com.example.saurabhpathak.tiles.MainActivity.PREFS_NAME;
@@ -134,13 +138,32 @@ public class ButtonAdapter extends BaseAdapter {
                             int minutes = (int) (timeElapsed - hours * 3600000) / 60000;
                             int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
                             Log.d("chrono", String.valueOf(seconds));
-                            TextView tv = (TextView)((Activity)context).findViewById(R.id.tv_winStatus);
-                            tv.setText("Game Finished!!! Final Score is:" + (1000-(minutes*100)-(seconds*10)-clickCounter));
+                            TextView tv = (TextView) ((Activity) context).findViewById(R.id.tv_winStatus);
+                            int score = (1000 - (minutes * 100) - (seconds * 10) - clickCounter);
+                            tv.setText("Game Finished!!! Final Score is:" + score);
                             //tileList = new ArrayList<Tile>();
 
                             SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
+                            String scores = settings.getString("scores", "");
+                            JSONArray list = null;
+                            if (scores.equals("")) {
+                                list = new JSONArray();
+                                JSONObject obj = new JSONObject();
+                                try {
+                                    obj.put("value", score);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                list.put(obj);
+                            } else {
+                                try {
+                                    list = Utils.addAndSortList(scores, score);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                             SharedPreferences.Editor editor = settings.edit();
-                            editor.putString("scores", "");
+                            editor.putString("scores", list.toString());
                             editor.commit();
                         }
                     }
