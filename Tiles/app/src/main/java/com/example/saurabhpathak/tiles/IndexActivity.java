@@ -18,10 +18,8 @@ public class IndexActivity extends Activity {
 
         Button btn = (Button)findViewById(R.id.navigateToGame);
         Button resumeBtn = (Button)findViewById(R.id.resumeGame);
-        btn.setText("Start Game");
 
         Button scoreBtn = (Button)findViewById(R.id.scoreBtn);
-        scoreBtn.setText("Scores");
         scoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,7 +32,6 @@ public class IndexActivity extends Activity {
         final String savedList = settings.getString("tileList", "");
 
         if (!savedList.equals("")) {
-            resumeBtn.setText("Resume Game");
             resumeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

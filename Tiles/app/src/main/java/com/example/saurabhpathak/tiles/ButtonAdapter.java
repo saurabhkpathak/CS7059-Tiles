@@ -2,6 +2,7 @@ package com.example.saurabhpathak.tiles;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
@@ -14,6 +15,8 @@ import android.widget.Chronometer;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static com.example.saurabhpathak.tiles.MainActivity.PREFS_NAME;
 
 /**
  * Created by saurabhpathak on 08/11/2016.
@@ -134,6 +137,11 @@ public class ButtonAdapter extends BaseAdapter {
                             TextView tv = (TextView)((Activity)context).findViewById(R.id.tv_winStatus);
                             tv.setText("Game Finished!!! Final Score is:" + (1000-(minutes*100)-(seconds*10)-clickCounter));
                             //tileList = new ArrayList<Tile>();
+
+                            SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putString("scores", "");
+                            editor.commit();
                         }
                     }
                 });
