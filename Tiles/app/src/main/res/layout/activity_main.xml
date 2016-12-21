@@ -8,20 +8,46 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/gradient"
     tools:context="com.example.saurabhpathak.tiles.MainActivity">
 
-    <TextView
+    <GridView
+        android:id="@+id/myGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/mainActivityTextView" />
 
-    <Button
-        android:text="Button"
-        android:layout_marginTop="42dp"
-        android:id="@+id/button1"
-        android:layout_below="@+id/mainActivityTextView"
-        android:layout_alignParentStart="true"
+        android:numColumns="4"
+        android:stretchMode="columnWidth"
+
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_marginEnd="18dp"
+        android:id="@+id/clickCount"
+        android:textStyle="bold"
+        android:layout_alignBaseline="@+id/chronometer"
+        android:layout_alignBottom="@+id/chronometer"
+        android:layout_alignParentEnd="true" />
+
+    <Chronometer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chronometer"
+        android:layout_marginStart="11dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:id="@+id/tv_winStatus" />
 </RelativeLayout>

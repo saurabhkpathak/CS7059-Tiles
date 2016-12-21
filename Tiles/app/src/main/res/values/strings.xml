@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Tiles</string>
+    <string name="title_activity_index">IndexActivity</string>
+    <string name="tile_label">TILE</string>
+    <string name="start_game">Start Game</string>
+    <string name="resume_game">Resume Game</string>
+    <string name="scores">Best Scores</string>
+    <string name="welcome_text">Welcome to TILES</string>
+    <string name="score_list">SCORE LIST</string>
 </resources>
